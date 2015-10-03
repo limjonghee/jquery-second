@@ -124,18 +124,19 @@ var user = {
 	},
 
 	//DB 연동시 수정
-	find : function(email){
+	find : function(obj){
 		var result;
 
-		$.each(users, function(index, value){
-
-			if(value.email === email){
-				result = value;
-				return;
+		$.ajax({
+			method: 'POST',
+			url: 'email',
+			data: obj,
+			dataType: 'json',
+			success: function(data){
+				alert(data.status+'\n'+data.message);
+				return data.status;
 			}
 		});
-		
-		return result;
 	},
 
 	//DB 연동시 수정
