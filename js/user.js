@@ -45,11 +45,10 @@ var user = {
 		this.$el.find('#btnSubmit').click(function(){
 			user.signUp();
 		});
-		
+
 		this.$el.find('#btnLogin').click(function(){
-			
 			user.login();
-		});
+		});	
 
 	},
 
@@ -86,15 +85,8 @@ var user = {
             alert('패스워드가 일치하지 않습니다.');
             return;
         }
-	
-		// 3. 이미 등록된 사용자가 아닌가?
-		if(this.find(email)){
-			alert('이미 가입된 사용자입니다.');
-			return;
-		}
-
-		// 4. 위 검증이 끝나면 회원 가입
-		var currentTime = new Date();
+		
+		// 저장
 		this.save({
 					email : email,
 					password : password,
@@ -124,28 +116,61 @@ var user = {
 	},
 
 	//DB 연동시 수정
-	find : function(email){
+	find : function(obj){
 		var result;
+		var _ = this;
 
-		$.each(users, function(index, value){
-
-			if(value.email === email){
-				result = value;
-				return;
+		$.ajax({
+			method: 'POST',
+			url: 'email',
+			data: obj,
+			dataType: 'json',
+			success: function(data){
+				
+				alert(data.status);
+				
+				//data.status는 조작 가능
+				if(!data.status){
+					_.save(obj);
+					_.closeModal();
+				}else{
+					alert('이미 가입된 사용자입니다.');
+				}
 			}
+
 		});
-		
-		return result;
 	},
 
 	//DB 연동시 수정
 	save : function(obj){
+		var _ = this;
 
-		users.push(obj);
-		
-		alert('등록 되었습니다.');
-
-		this.closeModal();
+		$.ajax({
+			method: 'POST',
+			url: 'user',
+			data: obj,
+			dataType: 'json',
+			success: function(data){
+				
+				if(data.status){
+					alert('등록 되었습니다.');
+					_.closeModal();
+				}else{
+					alert('이미 가입된 사용자입니다.');
+				}
+			}
+		});		
 	},
 
+	login : function(){
+		var email = this.$el.find('#loginEmail').val(),
+			password = this.$el.find('#loginPassword').val();
+
+		if(this.find({email : email, password : password})){
+			alert('login!');
+		}else{
+			alert('check your email & password');
+		}
+
+	}
 }

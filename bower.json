@@ -1,11 +1,14 @@
 {
   "name": "jquery-study",
-  "version": "0.0.0",
-  "keywords": [
-    "jquery"
-  ],
+  "version": "0.1.0",
+  "homepage": "https://github.com/jojoldu/jquery-study",
   "authors": [
-    "caffelatte0522@naver.com"
+    "jojoldu@gmail.com"
+  ],
+  "description": "front project for jquery study",
+  "keywords": [
+    "jquery",
+    "angular"
   ],
   "license": "MIT",
   "ignore": [
